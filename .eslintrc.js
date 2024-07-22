@@ -15,5 +15,11 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
       },
     ],
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: ['**/*.spec.ts', '**/*.spec.tsx', 'vitest.config.ts'],
+      },
+    ],
   },
 };

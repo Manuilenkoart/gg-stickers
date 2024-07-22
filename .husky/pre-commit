@@ -1,0 +1,3 @@
+
+#! npm run cypress:run #! Needs DEV to be running
+npm run lint-staged

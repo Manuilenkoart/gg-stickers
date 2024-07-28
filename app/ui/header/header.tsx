@@ -1,5 +1,6 @@
-import ROUTE_PATH from '@/app/lib/ROUTE_PATH.ts';
+import ROUTE_PATH from '@/app/lib/ROUTE_PATH';
 import Link from 'next/link';
+
 import S from './header.module.scss';
 
 export default function Header() {

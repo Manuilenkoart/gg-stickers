@@ -1,4 +1,4 @@
-import { Product } from '../types.ts';
+import { Product } from '../types';
 
 export const productsMock: Product[] = [
   { id: 'product-id-1', name: 'product-name-1' },

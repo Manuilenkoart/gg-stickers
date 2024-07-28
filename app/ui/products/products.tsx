@@ -1,5 +1,6 @@
-import { productsMock } from '@/app/lib/mock/index.ts';
-import { ProductCard } from './productCard/index.ts';
+import { productsMock } from '@/app/lib/mock';
+
+import { ProductCard } from './productCard';
 import S from './products.module.scss';
 
 export default function Products() {

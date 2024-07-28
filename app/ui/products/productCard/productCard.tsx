@@ -1,5 +1,5 @@
-import ROUTE_PATH from '@/app/lib/ROUTE_PATH.ts';
-import { Product } from '@/app/lib/types.ts';
+import ROUTE_PATH from '@/app/lib/ROUTE_PATH';
+import { Product } from '@/app/lib/types';
 import Link from 'next/link';
 
 interface ProductCardProps {

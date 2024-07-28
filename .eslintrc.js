@@ -21,5 +21,6 @@ module.exports = {
         devDependencies: ['**/*.spec.ts', '**/*.spec.tsx', 'vitest.config.ts'],
       },
     ],
+    'import/prefer-default-export': 'off',
   },
 };

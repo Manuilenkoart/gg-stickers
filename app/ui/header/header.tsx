@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import ROUTE_PATH from '@/app/lib/ROUTE_PATH';
 import Link from 'next/link';
 
@@ -7,11 +8,15 @@ export default function Header() {
   return (
     <header className={S.header}>
       <Link href={ROUTE_PATH.HOME}>
-        <h1>Home (logo)</h1>
+        <h3>GG Stickers</h3>
       </Link>
 
       <Link href={ROUTE_PATH.CART.INDEX}>
-        <div>cart</div>
+        <img
+          src="./cart.svg"
+          alt="cart"
+          width="24px"
+        />
       </Link>
     </header>
   );

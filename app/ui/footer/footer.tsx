@@ -1,9 +1,11 @@
 import ROUTE_PATH from '@/app/lib/ROUTE_PATH';
 import Link from 'next/link';
 
+import S from './footer.module.scss';
+
 export default function Footer() {
   return (
-    <footer>
+    <footer className={S.container}>
       <Link href={ROUTE_PATH.ABOUT.INDEX}>About</Link>
     </footer>
   );

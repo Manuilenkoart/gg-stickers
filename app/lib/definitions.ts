@@ -2,6 +2,9 @@ export type Product = {
   id: string;
   name: string;
   description: string;
-  price: number;
+  price: {
+    value: number;
+    currency: 'usd';
+  };
   src: string;
 };

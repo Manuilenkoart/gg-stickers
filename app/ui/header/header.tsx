@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import ROUTE_PATH from '@/app/lib/ROUTE_PATH';
+import ROUTE_PATH from 'app/lib/ROUTE_PATH';
 import Link from 'next/link';
 
 import S from './header.module.scss';

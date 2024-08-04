@@ -2,9 +2,6 @@ import Link from 'next/link';
 import S from './page.module.scss';
 
 export default function Home() {
-  const b: number = false;
-  console.log(b);
-
   return (
     <main>
       <header>

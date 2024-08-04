@@ -2,9 +2,8 @@ import Link from 'next/link';
 import S from './page.module.scss';
 
 export default function Home() {
-  const d: number = false;
-  console.log(d);    
-   
+  const a: number = false;
+  console.log(a);
 
   return (
     <main>
@@ -14,8 +13,7 @@ export default function Home() {
       </header>
 
       <section className={S.section}>
-        <img src="" 
-        />  
+        <img src="" />
         <div>1</div>
         <div>2</div>
         <div>3</div>

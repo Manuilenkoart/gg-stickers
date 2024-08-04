@@ -1,9 +1,4 @@
 module.exports = {
-  env: {
-    node: true,
-    es2021: true,
-    browser: true,
-  },
   plugins: ['@typescript-eslint', 'prettier'],
   extends: ['next/core-web-vitals', 'prettier', 'plugin:prettier/recommended', 'plugin:@typescript-eslint/recommended'],
   rules: {
@@ -18,6 +13,12 @@ module.exports = {
       'error',
       {
         devDependencies: ['**/*.spec.ts', '**/*.spec.tsx', 'vitest.config.ts'],
+      },
+    ],
+    'jsx-a11y/alt-text': [
+      'error',
+      {
+        elements: ['img', 'input[type="image"]'],
       },
     ],
   },

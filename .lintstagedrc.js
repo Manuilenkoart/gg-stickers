@@ -5,6 +5,6 @@ const buildEslintCommand = (filenames) =>
 
 module.exports = {
   '*.(ts|tsx)': () => 'npm run type-check',
-  '*.{js,jsx,ts,tsx,json,md,prettierrc,css,scss}': 'npm run prettier',
+  '*.{js,jsx,ts,tsx,json,md,css,scss}': 'npm run prettier',
   '*.{js,jsx,ts,tsx}': [buildEslintCommand],
 };

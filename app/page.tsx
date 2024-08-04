@@ -2,8 +2,8 @@ import Link from 'next/link';
 import S from './page.module.scss';
 
 export default function Home() {
-  const c: number = false;
-  console.log(c);    
+  const d: number = false;
+  console.log(d);    
    
 
   return (

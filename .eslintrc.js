@@ -2,7 +2,6 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier'],
   extends: [
     'next/core-web-vitals',
-    'airbnb',
     'prettier',
     'plugin:prettier/recommended',
     'plugin:@typescript-eslint/recommended',

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prettier": "prettier src --check .",
+    "prettier": "prettier app --check .",
     "lint-staged": "lint-staged",
     "husky-install": "husky install",
     "type-check": "tsc --project tsconfig.json --pretty --noEmit && eslint --fix . && prettier --write .",
@@ -45,11 +45,5 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,md,html}": [
-      "eslint --fix",
-      "prettier --write"
-    ]
   }
 }

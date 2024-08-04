@@ -8,7 +8,7 @@ on:
       - '**.html'
       - '**.ts'
       - '**.tsx'
-      - '**.spec'
+      - '**.spec.**'
       - '**.yml'
   workflow_dispatch:
 

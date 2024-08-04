@@ -10,6 +10,7 @@ export default function Home() {
       </header>
 
       <section className={S.section}>
+        <img src="" />
         <div>1</div>
         <div>2</div>
         <div>3</div>

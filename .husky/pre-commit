@@ -1,2 +1,1 @@
-#! npm run cypress:run #! Needs DEV to be running
 npx lint-staged

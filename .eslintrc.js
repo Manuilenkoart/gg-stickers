@@ -15,6 +15,12 @@ module.exports = {
         devDependencies: ['**/*.spec.ts', '**/*.spec.tsx', 'vitest.config.ts'],
       },
     ],
+    'jsx-a11y/alt-text': [
+      'error',
+      {
+        elements: ['img', 'input[type="image"]'],
+      },
+    ],
     // perfectionist
     // https://eslint-plugin-perfectionist.azat.io/
     'perfectionist/sort-named-imports': [

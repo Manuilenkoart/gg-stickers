@@ -1,0 +1,39 @@
+%container {
+  width: 280px;
+  margin: auto;
+  border: 2px dashed black;
+  background-color: #f5f5f6;
+
+  &:hover {
+    border: 2px solid black;
+  }
+}
+
+.container {
+  @extend %container;
+
+  img {
+    width: 280px;
+    height: 280px;
+  }
+
+  section {
+    display: grid;
+    padding: 12px 0;
+    background-color: #fff;
+
+    .price {
+      text-align: right;
+
+      span {
+        padding: 0 16px;
+      }
+    }
+  }
+}
+
+// skeleton
+.containerSkeleton {
+  @extend %container;
+  height: 381px;
+}

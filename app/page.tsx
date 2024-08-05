@@ -1,26 +1,16 @@
-/* eslint-disable @next/next/no-img-element */
-import Link from 'next/link';
+import { Suspense } from 'react';
+
 import S from './page.module.scss';
+import { Products, ProductsSkeleton } from './ui/products';
+import { WelcomeSection } from './ui/sections';
 
 export default function Home() {
   return (
-    <main>
-      <header>
-        <h1>Home</h1>
-        <Link href="/about">About</Link>
-      </header>
-
-      <section className={S.section}>
-        <img
-          src=""
-          alt="asd"
-        />
-        <div>1</div>
-        <div>2</div>
-        <div>3</div>
-        <div>4</div>
-        <div>5</div>
-      </section>
+    <main className={S.container}>
+      <WelcomeSection />
+      <Suspense fallback={<ProductsSkeleton />}>
+        <Products />
+      </Suspense>
     </main>
   );
 }

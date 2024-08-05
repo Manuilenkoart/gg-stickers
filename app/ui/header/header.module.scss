@@ -1,0 +1,9 @@
+.header {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: space-between;
+  padding: 16px;
+  background-color: rgb(245 245 246);
+  position: sticky;
+  top: 0;
+}

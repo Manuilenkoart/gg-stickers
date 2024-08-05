@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
 import S from './page.module.scss';
 
@@ -10,6 +11,10 @@ export default function Home() {
       </header>
 
       <section className={S.section}>
+        <img
+          src=""
+          alt="asd"
+        />
         <div>1</div>
         <div>2</div>
         <div>3</div>

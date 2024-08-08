@@ -4,13 +4,13 @@ import { Product } from 'app/lib/definitions';
 import ROUTE_PATH from 'app/lib/ROUTE_PATH';
 import Link from 'next/link';
 
-import S from './productCard.module.scss';
+import S from './productListCard.module.scss';
 
-interface ProductCardProps {
+interface ProductListCardProps {
   product: Product;
 }
 
-export default function ProductCard({ product: { id, name, description, price, src } }: ProductCardProps) {
+export default function ProductListCard({ product: { id, name, description, price, src } }: ProductListCardProps) {
   return (
     <Link
       href={ROUTE_PATH.PRODUCTS.DETAILS(id)}

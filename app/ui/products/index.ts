@@ -1,2 +1,2 @@
-export { default as Products } from './products';
-export { default as ProductsSkeleton } from './productsSkeleton';
+export { ProductDetailsForm } from './productDetails';
+export { ProductList, ProductListSkeleton } from './productList';

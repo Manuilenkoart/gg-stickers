@@ -4,13 +4,13 @@ import { productsMock } from 'app/lib/mock';
 import React from 'react';
 import { it, expect, describe } from 'vitest';
 
-import ProductCard from './productCard';
+import ProductListCard from './productListCard';
 
 const product = productsMock[0];
 
-describe('<ProductCard/>', () => {
+describe('<ProductListCard/>', () => {
   it('renders correctly', () => {
-    render(<ProductCard product={product} />);
+    render(<ProductListCard product={product} />);
 
     const name = screen.getByRole('heading', { level: 2, name: product.name });
     const description = screen.getByText(product.description);

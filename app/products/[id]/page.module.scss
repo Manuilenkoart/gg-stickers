@@ -1,0 +1,15 @@
+.main {
+  display: grid;
+  grid-auto-flow: column;
+}
+
+.imgContainer {
+  width: 300px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: 16px;
+}
+
+.inputsContainer {
+  display: grid;
+  grid-auto-columns: 100px 100px;
+}

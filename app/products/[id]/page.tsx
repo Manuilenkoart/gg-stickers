@@ -26,7 +26,8 @@ export default async function Page({ params }: { params: { id: string } }) {
         <h1>{product.name}</h1>
         <p>{product.description}</p>
         <div>{`${product.price.value} ${CURRENCY_SYMBOL_MAP[product.price.currency]}`}</div>
-        <ProductDetailsForm id={product.id} />
+
+        <ProductDetailsForm product={product} />
       </section>
     </main>
   );

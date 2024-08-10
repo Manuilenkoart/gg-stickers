@@ -1,5 +1,24 @@
 import { Product } from '../definitions';
 
+const size: Product['size'] = [
+  {
+    id: 'size-id-3-x-3',
+    name: '3 x 3',
+    price: {
+      value: 1,
+      currency: 'usd',
+    },
+  },
+  {
+    id: 'size-id-4-x-4',
+    name: '4 x 4',
+    price: {
+      value: 2,
+      currency: 'usd',
+    },
+  },
+];
+
 export const productsMock: Product[] = [
   {
     id: 'product-id-1',
@@ -10,6 +29,7 @@ export const productsMock: Product[] = [
       currency: 'usd',
     },
     src: '/assets/cheers.png',
+    size,
   },
   {
     id: 'product-id-2',
@@ -20,6 +40,7 @@ export const productsMock: Product[] = [
       currency: 'usd',
     },
     src: '/assets/holy.png',
+    size,
   },
   {
     id: 'product-id-3',
@@ -30,6 +51,7 @@ export const productsMock: Product[] = [
       currency: 'usd',
     },
     src: '/assets/bbc.png',
+    size,
   },
   {
     id: 'product-id-4',
@@ -40,6 +62,7 @@ export const productsMock: Product[] = [
       currency: 'usd',
     },
     src: '/assets/5_floor.png',
+    size,
   },
   {
     id: 'product-id-5',
@@ -50,6 +73,7 @@ export const productsMock: Product[] = [
       currency: 'usd',
     },
     src: '/assets/dev.png',
+    size,
   },
   {
     id: 'product-id-7',
@@ -60,6 +84,7 @@ export const productsMock: Product[] = [
       currency: 'usd',
     },
     src: '/assets/party.png',
+    size,
   },
   {
     id: 'product-id-8',
@@ -70,5 +95,6 @@ export const productsMock: Product[] = [
       currency: 'usd',
     },
     src: '/assets/poster.png',
+    size,
   },
 ];

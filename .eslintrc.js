@@ -21,6 +21,21 @@ module.exports = {
         elements: ['img', 'input[type="image"]'],
       },
     ],
+    'arrow-body-style': ['error', 'as-needed'],
+    'no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      },
+    ],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      },
+    ],
     // perfectionist
     // https://eslint-plugin-perfectionist.azat.io/
     'perfectionist/sort-named-imports': [

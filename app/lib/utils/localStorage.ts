@@ -2,8 +2,12 @@ import { LOCAL_STORAGE_KEY } from '../constants';
 
 export default function LocalStorage() {
   const set = (key: keyof typeof LOCAL_STORAGE_KEY, value: unknown) => {
-    localStorage.setItem(key, JSON.stringify(value));
-    window.dispatchEvent(new Event(key));
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+      window.dispatchEvent(new Event(key));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const get = <T>(key: keyof typeof LOCAL_STORAGE_KEY): T | null => {
@@ -13,8 +17,8 @@ export default function LocalStorage() {
 
     try {
       return JSON.parse(value);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
       return null;
     }
   };

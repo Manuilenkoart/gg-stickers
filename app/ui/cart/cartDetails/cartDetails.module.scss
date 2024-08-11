@@ -1,0 +1,80 @@
+.section {
+  margin: auto;
+  text-align: center;
+
+  table {
+    display: grid;
+    gap: 12px;
+
+    caption {
+      padding-bottom: 8px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(90px, 1fr) 100px 100px 70px;
+      gap: 16px;
+    }
+
+    thead {
+      border-bottom: 1px solid #000000;
+
+      tr {
+        @extend .layout;
+
+        th {
+          &:first-child {
+            text-align: left;
+          }
+          &:nth-child(2),
+          &:nth-child(3) {
+            text-align: center;
+          }
+          &:last-child {
+            text-align: center;
+          }
+        }
+      }
+    }
+
+    tbody {
+      display: grid;
+      gap: 8px;
+
+      tr {
+        @extend .layout;
+
+        th {
+          text-align: left;
+        }
+        td {
+          &:nth-child(2),
+          &:nth-child(3) {
+            text-align: center;
+          }
+          &:last-child {
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+
+  .backHome {
+    button {
+      margin-top: 16px;
+    }
+  }
+}
+
+.removeButton {
+  display: grid;
+  width: 20px;
+  margin: auto;
+  background-color: transparent;
+  border: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+}

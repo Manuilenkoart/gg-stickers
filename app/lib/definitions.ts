@@ -30,3 +30,5 @@ export type ProductCart = Pick<Product, 'id' | 'name' | 'src'> & {
     };
   };
 };
+
+export type LocalStorageCart = Record<Product['id'], ProductCart>;

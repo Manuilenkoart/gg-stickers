@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 import ROUTE_PATH from 'app/lib/ROUTE_PATH';
 import Link from 'next/link';
 
+import { CartIcon } from '../cart';
 import S from './header.module.scss';
 
 export default function Header() {
@@ -12,11 +12,7 @@ export default function Header() {
       </Link>
 
       <Link href={ROUTE_PATH.CART.INDEX}>
-        <img
-          src="./cart.svg"
-          alt="cart"
-          width="24px"
-        />
+        <CartIcon />
       </Link>
     </header>
   );

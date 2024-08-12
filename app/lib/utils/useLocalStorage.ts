@@ -1,17 +1,17 @@
 import { LOCAL_STORAGE_KEY } from '../constants';
 
-export default function LocalStorage() {
-  const set = (key: keyof typeof LOCAL_STORAGE_KEY, value: unknown) => {
+export default function useLocalStorage() {
+  const setLS = (key: keyof typeof LOCAL_STORAGE_KEY, value: unknown) => {
     try {
-      localStorage.setItem(key, JSON.stringify(value));
+      window.localStorage.setItem(key, JSON.stringify(value));
       window.dispatchEvent(new Event(key));
     } catch (error) {
       console.error(error);
     }
   };
 
-  const get = <T>(key: keyof typeof LOCAL_STORAGE_KEY): T | null => {
-    const value = localStorage.getItem(key);
+  const getLS = <T>(key: keyof typeof LOCAL_STORAGE_KEY): T | null => {
+    const value = window.localStorage.getItem(key);
 
     if (!value) return null;
 
@@ -24,7 +24,7 @@ export default function LocalStorage() {
   };
 
   return {
-    set,
-    get,
+    setLS,
+    getLS,
   };
 }

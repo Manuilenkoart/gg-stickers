@@ -2,20 +2,19 @@
 /* eslint-disable @next/next/no-img-element */
 import { LOCAL_STORAGE_KEY } from 'app/lib/constants';
 import { LocalStorageCart } from 'app/lib/definitions';
-import { LocalStorage } from 'app/lib/utils';
+import { useLocalStorage } from 'app/lib/utils';
 import clsx from 'clsx';
 import { useState, useEffect } from 'react';
 
 import S from './cartIcon.module.scss';
 
 export default function CartIcon() {
-  const [cartCount, setCartCount] = useState(0);
+  const { getLS } = useLocalStorage();
 
-  useEffect(() => {
-    const localStorageCart = LocalStorage().get<LocalStorageCart>(LOCAL_STORAGE_KEY.cart);
-    const count = !!localStorageCart ? productQuantityCounter(localStorageCart) : 0;
-    setCartCount(count);
-  }, []);
+  const [cartCount, setCartCount] = useState(() => {
+    const localStorageCart = getLS<LocalStorageCart>(LOCAL_STORAGE_KEY.cart);
+    return !!localStorageCart ? productQuantityCounter(localStorageCart) : 0;
+  });
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -2,7 +2,7 @@
 
 import { LOCAL_STORAGE_KEY } from 'app/lib/constants';
 import { Product, ProductCart, ProductSize, LocalStorageCart } from 'app/lib/definitions';
-import { LocalStorage } from 'app/lib/utils';
+import { useLocalStorage } from 'app/lib/utils';
 import { Button, Select } from 'app/ui/components';
 import { useMemo, useState } from 'react';
 
@@ -13,6 +13,8 @@ interface ProductDetailsFormProps {
 }
 
 export default function ProductDetailsForm({ product }: ProductDetailsFormProps) {
+  const { getLS, setLS } = useLocalStorage();
+
   const [cart, setCart] = useState<{ quantity: number; sizeId: ProductSize['id'] }>(() => {
     const sizeId = product.size.length ? product.size[1].id : '';
 
@@ -37,7 +39,7 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
 
     const { description: _description, price: _price, ...restProductFields } = product;
 
-    const productsInCart = LocalStorage().get<LocalStorageCart>(LOCAL_STORAGE_KEY.cart) ?? {};
+    const productsInCart = getLS<LocalStorageCart>(LOCAL_STORAGE_KEY.cart) ?? {};
     const hasProductInCart = !!productsInCart[product.id];
 
     const selectedSize = product.size.find(({ id }) => id === cart.sizeId);
@@ -53,7 +55,7 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
       },
     };
     const updateLocalStorageCart = (product: ProductCart) => {
-      LocalStorage().set(LOCAL_STORAGE_KEY.cart, { ...productsInCart, [restProductFields.id]: product });
+      setLS(LOCAL_STORAGE_KEY.cart, { ...productsInCart, [restProductFields.id]: product });
     };
 
     if (!hasProductInCart) {

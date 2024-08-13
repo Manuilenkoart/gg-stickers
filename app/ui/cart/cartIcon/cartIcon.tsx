@@ -56,6 +56,7 @@ export default function CartIcon() {
 
 const productQuantityCounter = (cart: LocalStorageCart) =>
   Object.values(cart).reduce(
-    (productAcc, { size }) => productAcc + Object.values(size).reduce((sizeAcc, { quantity }) => sizeAcc + quantity, 0),
+    (productAcc, { sizes }) =>
+      productAcc + Object.values(sizes).reduce((sizeAcc, { quantity }) => sizeAcc + quantity, 0),
     0,
   );

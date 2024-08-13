@@ -1,8 +1,8 @@
 'use client';
 
 import { LOCAL_STORAGE_KEY } from 'app/lib/constants';
-import { Product, ProductCart, ProductSize, LocalStorageCart } from 'app/lib/definitions';
-import { useLocalStorage } from 'app/lib/utils';
+import { Product, ProductSize, CartSizeMap, LocalStorageCart } from 'app/lib/definitions';
+import { useLocalStorage, adaptLocalStorageCartToCartMap, adaptCartMapToLocalStorageCart } from 'app/lib/utils';
 import { Button, Select } from 'app/ui/components';
 import { useMemo, useState } from 'react';
 
@@ -15,7 +15,7 @@ interface ProductDetailsFormProps {
 export default function ProductDetailsForm({ product }: ProductDetailsFormProps) {
   const { getLS, setLS } = useLocalStorage();
 
-  const [cart, setCart] = useState<{ quantity: number; sizeId: ProductSize['id'] }>(() => {
+  const [userChoice, setUserChoice] = useState<{ quantity: number; sizeId: ProductSize['id'] }>(() => {
     const sizeId = product.size.length ? product.size[1].id : '';
 
     return { quantity: 1, sizeId };
@@ -24,66 +24,45 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
   const sizeOptions = useMemo(() => product.size.map(({ id, name }) => ({ label: name, value: id })), [product.size]);
 
   const handleChangeQuantity = (quantity: string) => {
-    setCart((prev) => ({
+    setUserChoice((prev) => ({
       ...prev,
       quantity: quantity.trim() ? Math.floor(Number(quantity)) : 0,
     }));
   };
 
   const handleChangeSize = (sizeId: ProductSize['id']) => {
-    setCart((prev) => ({ ...prev, sizeId }));
+    setUserChoice((prev) => ({ ...prev, sizeId }));
   };
 
   const handleClickAddToCart = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { description: _description, price: _price, ...restProductFields } = product;
+    const localStorageCart = getLS<LocalStorageCart>(LOCAL_STORAGE_KEY.cart);
+    const cartMap = adaptLocalStorageCartToCartMap(localStorageCart);
 
-    const productsInCart = getLS<LocalStorageCart>(LOCAL_STORAGE_KEY.cart) ?? {};
-    const hasProductInCart = !!productsInCart[product.id];
+    const { description: _description, price: _price, size: _size, ...restProductFields } = product;
 
-    const selectedSize = product.size.find(({ id }) => id === cart.sizeId);
+    const selectedSize = product.size.find(({ id }) => id === userChoice.sizeId);
     if (!selectedSize) {
       console.error('The selected size was not found');
       return;
     }
 
-    const newSize = {
-      [cart.sizeId]: {
-        ...selectedSize,
-        quantity: cart.quantity,
-      },
-    };
-    const updateLocalStorageCart = (product: ProductCart) => {
-      setLS(LOCAL_STORAGE_KEY.cart, { ...productsInCart, [restProductFields.id]: product });
-    };
+    const productInCart = cartMap.get(product.id);
+    const cartSizeMap: CartSizeMap = productInCart ? new Map(productInCart.sizes) : new Map();
 
-    if (!hasProductInCart) {
-      const newProduct = { ...restProductFields, size: newSize };
-      return updateLocalStorageCart(newProduct);
-    }
+    const productSizeInCart = cartSizeMap.get(userChoice.sizeId);
+    const updatedQuantity = productSizeInCart ? productSizeInCart.quantity + userChoice.quantity : userChoice.quantity;
 
-    const productInCard = productsInCart[product.id];
+    cartSizeMap.set(userChoice.sizeId, {
+      ...selectedSize,
+      quantity: updatedQuantity,
+    });
 
-    const hasProductSize = !!productInCard.size[cart.sizeId];
+    cartMap.set(product.id, { ...restProductFields, sizes: cartSizeMap });
 
-    if (hasProductSize) {
-      const sizeToUpdate = productInCard.size[cart.sizeId];
-      const newQuantity = cart.quantity + sizeToUpdate.quantity;
-
-      const newSize = {
-        [cart.sizeId]: {
-          ...sizeToUpdate,
-          quantity: newQuantity,
-        },
-      };
-
-      const updatedProduct = { ...productInCard, size: { ...productInCard.size, ...newSize } };
-      return updateLocalStorageCart(updatedProduct);
-    } else {
-      const updatedProduct = { ...productInCard, size: { ...productInCard.size, ...newSize } };
-      return updateLocalStorageCart(updatedProduct);
-    }
+    const updatedLocalStorageCart = adaptCartMapToLocalStorageCart(cartMap);
+    setLS(LOCAL_STORAGE_KEY.cart, updatedLocalStorageCart);
   };
 
   return (
@@ -100,7 +79,7 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
           name="quantity"
           min="1"
           step="1"
-          value={cart.quantity}
+          value={userChoice.quantity}
           onChange={(e) => handleChangeQuantity(e.target.value)}
         />
       </div>
@@ -109,7 +88,7 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
         <Select
           name="sizeId"
           label="Size"
-          defaultValue={cart.sizeId}
+          defaultValue={userChoice.sizeId}
           options={sizeOptions}
           onChange={handleChangeSize}
         />

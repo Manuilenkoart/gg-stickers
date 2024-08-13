@@ -24,7 +24,7 @@ type Price = {
 };
 
 export type ProductCart = Pick<Product, 'id' | 'name' | 'src'> & {
-  size: {
+  sizes: {
     [key: ProductSize['id']]: ProductSize & {
       quantity: number;
     };
@@ -32,3 +32,7 @@ export type ProductCart = Pick<Product, 'id' | 'name' | 'src'> & {
 };
 
 export type LocalStorageCart = Record<Product['id'], ProductCart>;
+
+export type CartSizeMap = Map<ProductSize['id'], ProductSize & { quantity: number }>;
+
+export type CartMap = Map<Product['id'], Pick<Product, 'id' | 'name' | 'src'> & { sizes: CartSizeMap }>;

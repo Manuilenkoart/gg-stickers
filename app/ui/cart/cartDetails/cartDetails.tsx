@@ -1,9 +1,9 @@
 'use client';
 
 import { LOCAL_STORAGE_KEY } from 'app/lib/constants';
-import { Product, ProductCart, ProductSize, LocalStorageCart } from 'app/lib/definitions';
+import { CartMap, ProductCart, ProductSize, LocalStorageCart } from 'app/lib/definitions';
 import ROUTE_PATH from 'app/lib/ROUTE_PATH';
-import { useLocalStorage } from 'app/lib/utils';
+import { useLocalStorage, adaptCartMapToLocalStorageCart, adaptLocalStorageCartToCartMap } from 'app/lib/utils';
 import { Button } from 'app/ui/components';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
@@ -11,69 +11,45 @@ import { useState, useEffect } from 'react';
 import S from './cartDetails.module.scss';
 import RemoveButton from './removeButton';
 
-type CartSizeMap = Map<ProductSize['id'], ProductSize & { quantity: number }>;
-
-type CartMap = Map<Product['id'], Pick<Product, 'id' | 'name' | 'src'> & { size: CartSizeMap }>;
-
 function CartDetails() {
   const { getLS, setLS } = useLocalStorage();
 
-  const [cart, setCart] = useState<CartMap>(() => {
+  const [cartMap, setCartMap] = useState<CartMap>(() => {
     const localStorageCart = getLS<LocalStorageCart>(LOCAL_STORAGE_KEY.cart);
-    const cartMap: CartMap = new Map();
-    console.log('useState');
 
-    if (!localStorageCart) return cartMap;
-
-    Object.entries(localStorageCart).forEach(([productKey, productValues]) => {
-      const cartSizeMap = new Map(Object.entries(productValues.size));
-
-      cartMap.set(productKey, { ...productValues, size: cartSizeMap });
-    });
-
-    return cartMap;
+    return adaptLocalStorageCartToCartMap(localStorageCart);
   });
 
   useEffect(() => {
-    // const abc = Array.from(cart.values()).map((product) => ({
-    //   [product.id]: { ...product, size: { ...Array.from(product.size.values()).map((size) => ({ [size.id]: size })) } },
-    // }));
-
-    const obj = {};
-    // cart.forEach((product) => {
-    //   product.size.forEach(
-    //     (size) => (obj = { ...obj, [product.id]: { ...product, size: { ...product.size, [size.id]: size } } }),
-    //   );
-    // });
-    // setLS(LOCAL_STORAGE_KEY.cart, obj);
-    console.log('obj', obj);
-  }, [cart, setLS]);
+    const localStorageCart = adaptCartMapToLocalStorageCart(cartMap);
+    setLS(LOCAL_STORAGE_KEY.cart, localStorageCart);
+  }, [cartMap, setLS]);
 
   const handleRemoveButton = (productId: ProductCart['id'], sizeId: ProductSize['id']) => {
-    setCart((prev) => {
+    setCartMap((prev) => {
       const prevCartMap = new Map(prev);
 
       const product = prevCartMap.get(productId);
       if (!product) return prevCartMap;
 
-      const productSize = product.size.get(sizeId);
+      const productSize = product.sizes.get(sizeId);
       if (!productSize) return prevCartMap;
 
-      const prevSizeMap = new Map(product.size);
+      const prevSizeMap = new Map(product.sizes);
 
       const newQuantity = productSize.quantity - 1;
 
       if (newQuantity > 0) {
         const quantityUpdated = { ...productSize, quantity: newQuantity };
         const sizeUpdated = prevSizeMap.set(sizeId, quantityUpdated);
-        const productUpdated = { ...product, size: sizeUpdated };
+        const productUpdated = { ...product, sizes: sizeUpdated };
 
         prevCartMap.set(productId, productUpdated);
       } else {
         prevSizeMap.delete(sizeId);
 
         if (prevSizeMap.size > 0) {
-          const productUpdated = { ...product, size: prevSizeMap };
+          const productUpdated = { ...product, sizes: prevSizeMap };
           prevCartMap.set(productId, productUpdated);
         } else {
           prevCartMap.delete(productId);
@@ -86,7 +62,7 @@ function CartDetails() {
 
   return (
     <main className={S.section}>
-      {cart.size ? (
+      {cartMap.size ? (
         <table>
           <caption>
             <h1>Your Cart</h1>
@@ -101,8 +77,8 @@ function CartDetails() {
           </thead>
 
           <tbody>
-            {Array.from(cart.values()).map((product) =>
-              [...product.size.values()].map((size) => (
+            {Array.from(cartMap.values()).map((product) =>
+              Array.from(product.sizes.values()).map((size) => (
                 <tr key={`${product.id}-${size.id}`}>
                   <th>{`${product.name}, ${size.name}`}</th>
                   <td>{size.quantity}</td>

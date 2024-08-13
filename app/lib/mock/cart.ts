@@ -7,7 +7,7 @@ export const cartMock: Record<Product['id'], ProductCart> = {
     id: product.id,
     name: product.name,
     src: product.src,
-    size: {
+    sizes: {
       ['size-id-1']: {
         id: 'size-id-1',
         name: '3x3',

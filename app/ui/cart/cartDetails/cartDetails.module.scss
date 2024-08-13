@@ -40,6 +40,8 @@
     tbody {
       display: grid;
       gap: 8px;
+      padding: 16px 0;
+      border-bottom: 1px solid #000000;
 
       tr {
         @extend .layout;
@@ -54,6 +56,18 @@
           }
           &:last-child {
             text-align: center;
+          }
+        }
+      }
+    }
+
+    tfoot {
+      tr {
+        @extend .layout;
+
+        th {
+          &:first-child {
+            text-align: left;
           }
         }
       }

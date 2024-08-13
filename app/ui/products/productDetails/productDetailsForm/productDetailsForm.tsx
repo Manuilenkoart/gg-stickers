@@ -37,9 +37,6 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
   const handleClickAddToCart = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const localStorageCart = getLS<LocalStorageCart>(LOCAL_STORAGE_KEY.cart);
-    const cartMap = adaptLocalStorageCartToCartMap(localStorageCart);
-
     const { description: _description, price: _price, size: _size, ...restProductFields } = product;
 
     const selectedSize = product.size.find(({ id }) => id === userChoice.sizeId);
@@ -47,6 +44,9 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
       console.error('The selected size was not found');
       return;
     }
+
+    const localStorageCart = getLS<LocalStorageCart>(LOCAL_STORAGE_KEY.cart);
+    const cartMap = adaptLocalStorageCartToCartMap(localStorageCart);
 
     const productInCart = cartMap.get(product.id);
     const cartSizeMap: CartSizeMap = productInCart ? new Map(productInCart.sizes) : new Map();

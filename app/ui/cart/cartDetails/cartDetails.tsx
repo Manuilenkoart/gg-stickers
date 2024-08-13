@@ -1,6 +1,6 @@
 'use client';
 
-import { LOCAL_STORAGE_KEY } from 'app/lib/constants';
+import { LOCAL_STORAGE_KEY, CURRENCY_SYMBOL_MAP } from 'app/lib/constants';
 import { CartMap, ProductCart, ProductSize, LocalStorageCart } from 'app/lib/definitions';
 import ROUTE_PATH from 'app/lib/ROUTE_PATH';
 import { useLocalStorage, adaptCartMapToLocalStorageCart, adaptLocalStorageCartToCartMap } from 'app/lib/utils';
@@ -60,6 +60,12 @@ function CartDetails() {
     });
   };
 
+  const cartPriceTotal = Array.from(cartMap.values()).reduce(
+    (productAcc, product) =>
+      productAcc +
+      Array.from(product.sizes.values()).reduce((sizeAcc, size) => sizeAcc + size.quantity * size.price.value, 0),
+    0,
+  );
   return (
     <main className={S.section}>
       {cartMap.size ? (
@@ -82,7 +88,7 @@ function CartDetails() {
                 <tr key={`${product.id}-${size.id}`}>
                   <th>{`${product.name}, ${size.name}`}</th>
                   <td>{size.quantity}</td>
-                  <td>{size.price.value}</td>
+                  <td>{`${CURRENCY_SYMBOL_MAP[size.price.currency]} ${size.price.value}`}</td>
                   <td>
                     <RemoveButton onClick={() => handleRemoveButton(product.id, size.id)} />
                   </td>
@@ -90,6 +96,14 @@ function CartDetails() {
               )),
             )}
           </tbody>
+          <tfoot>
+            <tr>
+              <th>Total</th>
+              <td></td>
+              <td>{`${CURRENCY_SYMBOL_MAP['usd']} ${cartPriceTotal}`}</td>
+              <td></td>
+            </tr>
+          </tfoot>
         </table>
       ) : (
         <>

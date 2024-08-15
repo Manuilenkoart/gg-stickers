@@ -1,3 +1,5 @@
+@import 'app/styles/mixin.scss';
+
 %container {
   width: 280px;
   margin: auto;
@@ -36,4 +38,28 @@
 .containerSkeleton {
   @extend %container;
   height: 381px;
+  overflow: hidden;
+
+  .img {
+    width: 280px;
+    height: 280px;
+    background-color: rgb(221, 221, 221);
+  }
+
+  section {
+    display: grid;
+    padding: 12px 0;
+
+    h2 {
+      height: 29px;
+      background-color: rgb(221, 221, 221);
+      @include shimmerEffect();
+    }
+
+    p {
+      height: 20px;
+      background-color: rgb(221, 221, 221);
+      @include shimmerEffect();
+    }
+  }
 }

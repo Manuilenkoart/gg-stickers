@@ -2,7 +2,7 @@
 'use client';
 
 import { LOCAL_STORAGE_KEY, CURRENCY_SYMBOL_MAP } from 'app/lib/constants';
-import { CartMap, ProductCart, ProductSize, LocalStorageCart } from 'app/lib/definitions';
+import { CartMap, ProductCart, ProductSize, CartSizeMap, LocalStorageCart } from 'app/lib/definitions';
 import ROUTE_PATH from 'app/lib/ROUTE_PATH';
 import { useLocalStorage, adaptCartMapToLocalStorageCart, adaptLocalStorageCartToCartMap } from 'app/lib/utils';
 import { Button } from 'app/ui/components';
@@ -67,6 +67,39 @@ function CartDetails() {
       Array.from(product.sizes.values()).reduce((sizeAcc, size) => sizeAcc + size.quantity * size.price.value, 0),
     0,
   );
+
+  const handleChangeQuantity = ({
+    quantity,
+    productId,
+    sizeId,
+  }: {
+    quantity: string;
+    productId: ProductCart['id'];
+    sizeId: ProductSize['id'];
+  }) => {
+    setCartMap((prev) => {
+      const prevCartMap = new Map(prev);
+
+      const productInCart = prevCartMap.get(productId);
+      if (!productInCart) return prevCartMap;
+
+      const cartSizeMap: CartSizeMap = new Map(productInCart.sizes);
+      const productSizeInCart = cartSizeMap.get(sizeId);
+      if (!productSizeInCart) return prevCartMap;
+
+      const minCartProductQuantity = 1;
+      const updatedQuantity = quantity.trim() ? Math.floor(Number(quantity)) : minCartProductQuantity;
+
+      cartSizeMap.set(sizeId, {
+        ...productSizeInCart,
+        quantity: updatedQuantity,
+      });
+
+      prevCartMap.set(productId, { ...productInCart, sizes: cartSizeMap });
+
+      return prevCartMap;
+    });
+  };
   return (
     <main className={S.section}>
       {cartMap.size ? (
@@ -96,7 +129,20 @@ function CartDetails() {
                       <p>{`${product.name}, ${size.name}`}</p>
                     </Link>
                   </th>
-                  <td>{size.quantity}</td>
+                  <td>
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      id="quantity"
+                      name="quantity"
+                      min="1"
+                      step="1"
+                      value={size.quantity}
+                      onChange={(e) =>
+                        handleChangeQuantity({ quantity: e.target.value, productId: product.id, sizeId: size.id })
+                      }
+                    />
+                  </td>
                   <td>{`${CURRENCY_SYMBOL_MAP[size.price.currency]} ${size.price.value}`}</td>
                   <td>
                     <RemoveButton onClick={() => handleRemoveButton(product.id, size.id)} />

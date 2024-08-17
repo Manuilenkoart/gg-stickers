@@ -19,3 +19,7 @@
     transform: translateX(100%);
   }
 }
+
+@mixin mainHeight {
+  height: calc(100vh - 180px);
+}

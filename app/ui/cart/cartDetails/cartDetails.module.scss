@@ -1,4 +1,7 @@
+@import 'app/styles/mixin.scss';
+
 .section {
+  @include mainHeight;
   margin: auto;
   text-align: center;
 

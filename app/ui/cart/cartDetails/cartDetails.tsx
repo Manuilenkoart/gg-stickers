@@ -107,7 +107,7 @@ function CartDetails() {
         </table>
       ) : (
         <>
-          <h2>Your cart is empty</h2>
+          <h1>Your cart is empty</h1>
           <Link
             href={ROUTE_PATH.HOME}
             className={S.backHome}

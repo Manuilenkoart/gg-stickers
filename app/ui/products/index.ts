@@ -1,2 +1,2 @@
-export { ProductDetailsForm } from './productDetails';
 export { ProductList, ProductListSkeleton } from './productList';
+export { ProductDetails, ProductDetailsForm } from './productDetails';

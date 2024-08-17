@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { LOCAL_STORAGE_KEY, CURRENCY_SYMBOL_MAP } from 'app/lib/constants';
@@ -86,7 +87,15 @@ function CartDetails() {
             {Array.from(cartMap.values()).map((product) =>
               Array.from(product.sizes.values()).map((size) => (
                 <tr key={`${product.id}-${size.id}`}>
-                  <th>{`${product.name}, ${size.name}`}</th>
+                  <th>
+                    <Link href={ROUTE_PATH.PRODUCTS.DETAILS(product.id)}>
+                      <img
+                        src={product.src}
+                        alt={product.name}
+                      />
+                      <p>{`${product.name}, ${size.name}`}</p>
+                    </Link>
+                  </th>
                   <td>{size.quantity}</td>
                   <td>{`${CURRENCY_SYMBOL_MAP[size.price.currency]} ${size.price.value}`}</td>
                   <td>

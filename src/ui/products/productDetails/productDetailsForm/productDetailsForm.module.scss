@@ -1,0 +1,31 @@
+.container {
+  margin-top: 16px;
+
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+  gap: 8px;
+  align-items: end;
+}
+
+.quantity {
+  display: grid;
+  grid-auto-flow: row;
+
+  input {
+    width: 100%;
+    padding: 8px;
+  }
+}
+
+.size {
+  display: grid;
+  grid-auto-flow: row;
+
+  select {
+    padding: 8px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

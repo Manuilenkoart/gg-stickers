@@ -1,0 +1,26 @@
+@mixin shimmerEffect {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    animation: shimmer 2s infinite;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 1), transparent);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@mixin mainHeight {
+  min-height: calc(100vh - 180px);
+  max-height: 100%;
+}

@@ -1,0 +1,121 @@
+@import '@/styles/mixin.scss';
+
+.section {
+  @include mainHeight;
+  margin: auto;
+  text-align: center;
+
+  table {
+    display: grid;
+    gap: 12px;
+
+    caption {
+      padding-bottom: 8px;
+    }
+
+    .layout {
+      display: grid;
+      align-items: center;
+      grid-template-columns: minmax(90px, 1fr) 100px 100px 70px;
+      gap: 16px;
+    }
+
+    thead {
+      border-bottom: 1px solid #000000;
+
+      tr {
+        @extend .layout;
+
+        th {
+          &:first-child {
+            text-align: left;
+          }
+
+          &:nth-child(2),
+          &:nth-child(3) {
+            text-align: center;
+          }
+
+          &:last-child {
+            text-align: center;
+          }
+        }
+      }
+    }
+
+    tbody {
+      display: grid;
+      gap: 8px;
+      padding: 16px 0;
+      border-bottom: 1px solid #000000;
+
+      tr {
+        @extend .layout;
+
+        th {
+          text-align: left;
+
+          a {
+            display: grid;
+            align-items: center;
+            grid-auto-flow: column;
+
+            &:hover {
+              color: blue;
+            }
+
+            img {
+              width: 64px;
+            }
+          }
+        }
+
+        td {
+          &:nth-child(2),
+          &:nth-child(3) {
+            text-align: center;
+          }
+
+          &:last-child {
+            text-align: center;
+          }
+
+          input {
+            width: 70px;
+            padding: 10px;
+          }
+        }
+      }
+    }
+
+    tfoot {
+      tr {
+        @extend .layout;
+
+        th {
+          &:first-child {
+            text-align: left;
+          }
+        }
+      }
+    }
+  }
+
+  .backHome {
+    button {
+      margin-top: 16px;
+    }
+  }
+}
+
+.removeButton {
+  display: grid;
+  width: 20px;
+  margin: auto;
+  background-color: transparent;
+  border: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+}

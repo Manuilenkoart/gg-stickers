@@ -108,8 +108,8 @@ function CartDetails() {
           </thead>
 
           <tbody>
-            {Array.from(cartMap.values()).map((product) =>
-              Array.from(product.sizes.values()).map((size) => (
+            {[...cartMap.values()].map((product) =>
+              [...product.sizes.values()].map((size) => (
                 <tr key={`${product.id}-${size.id}`}>
                   <th>
                     <Link href={ROUTE_PATH.PRODUCTS.DETAILS(product.id)}>

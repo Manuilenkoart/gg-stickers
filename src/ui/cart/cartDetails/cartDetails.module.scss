@@ -30,10 +30,12 @@
           &:first-child {
             text-align: left;
           }
+
           &:nth-child(2),
           &:nth-child(3) {
             text-align: center;
           }
+
           &:last-child {
             text-align: center;
           }
@@ -67,11 +69,13 @@
             }
           }
         }
+
         td {
           &:nth-child(2),
           &:nth-child(3) {
             text-align: center;
           }
+
           &:last-child {
             text-align: center;
           }

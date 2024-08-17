@@ -52,7 +52,7 @@ function CartDetails() {
     });
   };
 
-  const cartPriceTotal = Array.from(cartMap.values()).reduce(
+  const cartPriceTotal = [...cartMap.values()].reduce(
     (productAcc, product) =>
       productAcc +
       Array.from(product.sizes.values()).reduce((sizeAcc, size) => sizeAcc + size.quantity * size.price.value, 0),

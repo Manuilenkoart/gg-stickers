@@ -26,7 +26,7 @@ function CartDetails() {
     setLS(LOCAL_STORAGE_KEY.cart, localStorageCart);
   }, [cartMap, setLS]);
 
-  const handleRemoveButton = (productId: ProductCart['id'], sizeId: ProductSize['id']) => {
+  const handleRemoveProductClick = (productId: ProductCart['id'], sizeId: ProductSize['id']) => {
     setCartMap((prev) => {
       const prevCartMap = new Map(prev);
 
@@ -38,23 +38,13 @@ function CartDetails() {
 
       const prevSizeMap = new Map(product.sizes);
 
-      const newQuantity = productSize.quantity - 1;
+      prevSizeMap.delete(sizeId);
 
-      if (newQuantity > 0) {
-        const quantityUpdated = { ...productSize, quantity: newQuantity };
-        const sizeUpdated = prevSizeMap.set(sizeId, quantityUpdated);
-        const productUpdated = { ...product, sizes: sizeUpdated };
-
+      if (prevSizeMap.size > 0) {
+        const productUpdated = { ...product, sizes: prevSizeMap };
         prevCartMap.set(productId, productUpdated);
       } else {
-        prevSizeMap.delete(sizeId);
-
-        if (prevSizeMap.size > 0) {
-          const productUpdated = { ...product, sizes: prevSizeMap };
-          prevCartMap.set(productId, productUpdated);
-        } else {
-          prevCartMap.delete(productId);
-        }
+        prevCartMap.delete(productId);
       }
 
       return prevCartMap;
@@ -145,7 +135,7 @@ function CartDetails() {
                   </td>
                   <td>{`${CURRENCY_SYMBOL_MAP[size.price.currency]} ${size.price.value}`}</td>
                   <td>
-                    <RemoveButton onClick={() => handleRemoveButton(product.id, size.id)} />
+                    <RemoveButton onClick={() => handleRemoveProductClick(product.id, size.id)} />
                   </td>
                 </tr>
               )),

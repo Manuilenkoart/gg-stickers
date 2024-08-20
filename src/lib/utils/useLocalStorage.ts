@@ -3,15 +3,17 @@ import { LOCAL_STORAGE_KEY } from '../constants';
 export default function useLocalStorage() {
   const setLS = (key: keyof typeof LOCAL_STORAGE_KEY, value: unknown) => {
     try {
-      window.localStorage.setItem(key, JSON.stringify(value));
-      window.dispatchEvent(new Event(key));
+      global.localStorage.setItem(key, JSON.stringify(value));
+      global.dispatchEvent(new Event(key));
     } catch (error) {
       console.error(error);
     }
   };
 
   const getLS = <T>(key: keyof typeof LOCAL_STORAGE_KEY): T | null => {
-    const value = window.localStorage.getItem(key);
+    if (typeof window === 'undefined') return null;
+
+    const value = global.localStorage.getItem(key);
 
     if (!value) return null;
 

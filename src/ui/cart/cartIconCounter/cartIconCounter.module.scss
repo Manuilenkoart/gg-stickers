@@ -1,0 +1,19 @@
+.cartCount {
+  position: absolute;
+  border-radius: 50%;
+  top: -12px;
+  right: -12px;
+  font-size: 12px;
+  font-weight: 800;
+  background-color: #fff;
+  border: 1px solid;
+}
+.cartCountShort {
+  @extend .cartCount;
+  padding: 0 5px;
+}
+
+.cartCountLong {
+  @extend .cartCount;
+  padding: 2px 4px;
+}

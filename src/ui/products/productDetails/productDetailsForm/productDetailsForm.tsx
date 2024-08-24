@@ -92,6 +92,13 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
             value={userChoice.quantity}
             onChange={(e) => handleChangeQuantity(e.target.value)}
           />
+          {/*  TODO: InputNumber re-render label*/}
+          {/* <InputNumber
+            label={'Quantity'}
+            name={'quantity'}
+            value={userChoice.quantity}
+            onChange={handleChangeQuantity}
+          /> */}
         </div>
 
         <div className={S.size}>

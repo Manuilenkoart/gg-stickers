@@ -4,11 +4,21 @@ import { Product } from '@/lib/definitions';
 
 import S from './productDetails.module.scss';
 import { ProductDetailsForm } from './productDetailsForm';
+import { productsMock } from '@/lib/mock';
+import { fakeFetch } from '@/lib/utils';
+import { notFound } from 'next/navigation';
 
 interface ProductDetailsProps {
-  product: Product;
+  productId: Product['id'];
 }
-export default function ProductDetails({ product }: ProductDetailsProps) {
+export default async function ProductDetails({ productId }: ProductDetailsProps) {
+  const products = await fakeFetch<Product[]>(productsMock, { timeOut: 2000 });
+  const product = products.find(({ id }) => id === productId);
+
+  if (!product) {
+    notFound();
+  }
+
   return (
     <main className={S.main}>
       <img

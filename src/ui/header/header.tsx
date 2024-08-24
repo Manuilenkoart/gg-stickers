@@ -1,8 +1,10 @@
 import ROUTE_PATH from '@/lib/ROUTE_PATH';
 import Link from 'next/link';
 
-import { CartIcon } from '../cart/index';
 import S from './header.module.scss';
+import dynamic from 'next/dynamic';
+
+const NoSSRCartIcon = dynamic(() => import('../cart/cartIcon/cartIcon'), { ssr: false });
 
 export default function Header() {
   return (
@@ -12,7 +14,7 @@ export default function Header() {
       </Link>
 
       <Link href={ROUTE_PATH.CART.INDEX}>
-        <CartIcon />
+        <NoSSRCartIcon />
       </Link>
     </header>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { LOCAL_STORAGE_KEY } from '@/lib/constants';
+import { CURRENCY_SYMBOL_MAP, LOCAL_STORAGE_KEY } from '@/lib/constants';
 import { Product, ProductSize, CartSizeMap, LocalStorageCart } from '@/lib/definitions';
 
 import { useMemo, useState } from 'react';
@@ -23,6 +23,10 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
   });
 
   const sizeOptions = useMemo(() => product.size.map(({ id, name }) => ({ label: name, value: id })), [product.size]);
+  const selectedSize = useMemo(
+    () => product.size.find(({ id }) => id === userChoice.sizeId),
+    [product.size, userChoice.sizeId],
+  ) as ProductSize;
 
   const handleChangeQuantity = (quantity: string) => {
     setUserChoice((prev) => ({
@@ -39,12 +43,6 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
     e.preventDefault();
 
     const { description: _description, price: _price, size: _size, ...restProductFields } = product;
-
-    const selectedSize = product.size.find(({ id }) => id === userChoice.sizeId);
-    if (!selectedSize) {
-      console.error('The selected size was not found');
-      return;
-    }
 
     const localStorageCart = getLS<LocalStorageCart>(LOCAL_STORAGE_KEY.cart);
     const cartMap = adaptLocalStorageCartToCartMap(localStorageCart);
@@ -67,37 +65,41 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
   };
 
   return (
-    <form
-      className={S.container}
-      onSubmit={handleClickAddToCart}
-    >
-      <div className={S.quantity}>
-        <label htmlFor="quantity">Quantity</label>
-        <input
-          type="number"
-          inputMode="numeric"
-          id="quantity"
-          name="quantity"
-          min="1"
-          step="1"
-          value={userChoice.quantity}
-          onChange={(e) => handleChangeQuantity(e.target.value)}
-        />
-      </div>
+    <>
+      <div>{`${CURRENCY_SYMBOL_MAP[selectedSize.price.currency]} ${selectedSize.price.value} `}</div>
 
-      <div className={S.size}>
-        <Select
-          name="sizeId"
-          label="Size"
-          defaultValue={userChoice.sizeId}
-          options={sizeOptions}
-          onChange={handleChangeSize}
-        />
-      </div>
+      <form
+        className={S.container}
+        onSubmit={handleClickAddToCart}
+      >
+        <div className={S.quantity}>
+          <label htmlFor="quantity">Quantity</label>
+          <input
+            type="number"
+            inputMode="numeric"
+            id="quantity"
+            name="quantity"
+            min="1"
+            step="1"
+            value={userChoice.quantity}
+            onChange={(e) => handleChangeQuantity(e.target.value)}
+          />
+        </div>
 
-      <div>
-        <Button type="submit">Add to cart</Button>
-      </div>
-    </form>
+        <div className={S.size}>
+          <Select
+            name="sizeId"
+            label="Size"
+            defaultValue={userChoice.sizeId}
+            options={sizeOptions}
+            onChange={handleChangeSize}
+          />
+        </div>
+
+        <div>
+          <Button type="submit">Add to cart</Button>
+        </div>
+      </form>
+    </>
   );
 }

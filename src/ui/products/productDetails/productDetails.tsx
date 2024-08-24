@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import { CURRENCY_SYMBOL_MAP } from '@/lib/constants';
 import { Product } from '@/lib/definitions';
 
 import S from './productDetails.module.scss';
@@ -29,7 +28,6 @@ export default async function ProductDetails({ productId }: ProductDetailsProps)
       <section>
         <h1>{product.name}</h1>
         <p>{product.description}</p>
-        <div>{`${product.price.value} ${CURRENCY_SYMBOL_MAP[product.price.currency]}`}</div>
 
         <ProductDetailsForm product={product} />
       </section>

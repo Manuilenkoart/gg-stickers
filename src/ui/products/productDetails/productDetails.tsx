@@ -12,7 +12,7 @@ interface ProductDetailsProps {
   productId: Product['id'];
 }
 export default async function ProductDetails({ productId }: ProductDetailsProps) {
-  const products = await fakeFetch<Product[]>(productsMock, { timeOut: 2000 });
+  const products = await fakeFetch<Product[]>(productsMock, { timeOut: 200 });
   const product = products.find(({ id }) => id === productId);
 
   if (!product) {

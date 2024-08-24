@@ -3,7 +3,7 @@
 import { CURRENCY_SYMBOL_MAP, LOCAL_STORAGE_KEY } from '@/lib/constants';
 import { Product, ProductSize, CartSizeMap, LocalStorageCart } from '@/lib/definitions';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import S from './productDetailsForm.module.scss';
 import { Button, Select } from '@/ui/components';
@@ -28,16 +28,16 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
     [product.size, userChoice.sizeId],
   ) as ProductSize;
 
-  const handleChangeQuantity = (quantity: string) => {
+  const handleChangeQuantity = useCallback((quantity: string) => {
     setUserChoice((prev) => ({
       ...prev,
       quantity: quantity.trim() ? Math.floor(Number(quantity)) : 0,
     }));
-  };
+  }, []);
 
-  const handleChangeSize = (sizeId: ProductSize['id']) => {
+  const handleChangeSize = useCallback((sizeId: ProductSize['id']) => {
     setUserChoice((prev) => ({ ...prev, sizeId }));
-  };
+  }, []);
 
   const handleClickAddToCart = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -64,9 +64,17 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
     setLS(LOCAL_STORAGE_KEY.cart, updatedLocalStorageCart);
   };
 
+  const productPrice = useMemo(() => {
+    const {
+      price: { currency, value },
+    } = selectedSize;
+
+    return `${CURRENCY_SYMBOL_MAP[currency]} ${value}`;
+  }, [selectedSize]);
+
   return (
     <>
-      <div>{`${CURRENCY_SYMBOL_MAP[selectedSize.price.currency]} ${selectedSize.price.value} `}</div>
+      <div>{productPrice}</div>
 
       <form
         className={S.container}

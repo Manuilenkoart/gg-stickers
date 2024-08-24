@@ -1,14 +1,14 @@
 import { Options } from '@/lib/definitions';
+import { memo } from 'react';
 
 interface SelectProps {
   name: string;
   label: string;
   defaultValue: string;
-  // eslint-disable-next-line no-unused-vars
-  onChange: (value: string) => void;
+  onChange: (_value: string) => void;
   options: Options<string | number, string | number>[];
 }
-export default function Select({ defaultValue, label, name, onChange, options }: SelectProps) {
+function Select({ defaultValue, label, name, onChange, options }: SelectProps) {
   return (
     <>
       <label htmlFor={name}>{label}</label>
@@ -30,3 +30,5 @@ export default function Select({ defaultValue, label, name, onChange, options }:
     </>
   );
 }
+
+export default memo(Select);

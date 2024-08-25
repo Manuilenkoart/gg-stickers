@@ -1,7 +1,6 @@
-@import '@/styles/mixin.scss';
-
-.main {
-  @include mainHeight;
+.section {
+  display: grid;
+  width: 500px;
   margin: auto;
   text-align: center;
 

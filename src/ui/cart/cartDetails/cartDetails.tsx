@@ -88,7 +88,7 @@ function CartDetails() {
   );
 
   return (
-    <main className={S.main}>
+    <section className={S.section}>
       {cartMap.size ? (
         <table>
           <caption>
@@ -161,7 +161,7 @@ function CartDetails() {
           </Link>
         </>
       )}
-    </main>
+    </section>
   );
 }
 export default memo(CartDetails);

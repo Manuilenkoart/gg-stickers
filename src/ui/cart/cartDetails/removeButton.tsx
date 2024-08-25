@@ -1,13 +1,18 @@
+import { memo } from 'react';
 import S from './cartDetails.module.scss';
+import { ProductCart, ProductSize } from '@/lib/definitions';
 
 interface RemoveButtonProps {
-  onClick: () => void;
+  sizeId: ProductCart['id'];
+  productId: ProductSize['id'];
+  // eslint-disable-next-line no-unused-vars
+  onClick: (productId: ProductCart['id'], sizeId: ProductSize['id']) => void;
 }
-function RemoveButton({ onClick }: RemoveButtonProps) {
+function RemoveButton({ onClick, productId, sizeId }: RemoveButtonProps) {
   return (
     <button
       className={S.removeButton}
-      onClick={onClick}
+      onClick={() => onClick(productId, sizeId)}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -24,4 +29,4 @@ function RemoveButton({ onClick }: RemoveButtonProps) {
   );
 }
 
-export default RemoveButton;
+export default memo(RemoveButton);

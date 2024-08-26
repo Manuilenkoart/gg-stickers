@@ -1,18 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { LOCAL_STORAGE_KEY, CURRENCY_SYMBOL_MAP } from '@/lib/constants';
-import { CartMap, ProductCart, ProductSize, CartSizeMap, LocalStorageCart } from '@/lib/definitions';
+import { CURRENCY_SYMBOL_MAP, LOCAL_STORAGE_KEY } from '@/lib/constants';
+import { CartMap, CartSizeMap, LocalStorageCart, ProductCart, ProductSize } from '@/lib/definitions';
 import ROUTE_PATH from '@/lib/ROUTE_PATH';
 
 import Link from 'next/link';
-import { useState, useEffect, memo, useCallback } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 
-import S from './cartDetails.module.scss';
-import RemoveButton from './removeButton';
 import { adaptCartMapToLocalStorageCart, adaptLocalStorageCartToCartMap, useLocalStorage } from '@/lib/utils';
 import { Button } from '@/ui/components';
+import S from './cartDetails.module.scss';
 import ProductName from './productName';
+import QuantityInput from './quantityInput';
+import RemoveButton from './removeButton';
 
 function CartDetails() {
   const { getLS, setLS } = useLocalStorage();
@@ -28,30 +29,32 @@ function CartDetails() {
     setLS(LOCAL_STORAGE_KEY.cart, localStorageCart);
   }, [cartMap, setLS]);
 
-  const handleRemoveProductClick = useCallback((productId: ProductCart['id'], sizeId: ProductSize['id']) => {
-    setCartMap((prev) => {
-      const prevCartMap = new Map(prev);
+  const handleRemoveProductClick = useCallback(
+    (productId: ProductCart['id'], sizeId: ProductSize['id']) =>
+      setCartMap((prev) => {
+        const prevCartMap = new Map(prev);
 
-      const product = prevCartMap.get(productId);
-      if (!product) return prevCartMap;
+        const product = prevCartMap.get(productId);
+        if (!product) return prevCartMap;
 
-      const productSize = product.sizes.get(sizeId);
-      if (!productSize) return prevCartMap;
+        const productSize = product.sizes.get(sizeId);
+        if (!productSize) return prevCartMap;
 
-      const prevSizeMap = new Map(product.sizes);
+        const prevSizeMap = new Map(product.sizes);
 
-      prevSizeMap.delete(sizeId);
+        prevSizeMap.delete(sizeId);
 
-      if (prevSizeMap.size > 0) {
-        const productUpdated = { ...product, sizes: prevSizeMap };
-        prevCartMap.set(productId, productUpdated);
-      } else {
-        prevCartMap.delete(productId);
-      }
+        if (prevSizeMap.size > 0) {
+          const productUpdated = { ...product, sizes: prevSizeMap };
+          prevCartMap.set(productId, productUpdated);
+        } else {
+          prevCartMap.delete(productId);
+        }
 
-      return prevCartMap;
-    });
-  }, []);
+        return prevCartMap;
+      }),
+    [],
+  );
 
   const cartPriceTotal = [...cartMap.values()].reduce(
     (productAcc, product) =>
@@ -116,17 +119,11 @@ function CartDetails() {
                     />
                   </th>
                   <td>
-                    <input
-                      type="number"
-                      inputMode="numeric"
-                      id="quantity"
-                      name="quantity"
-                      min="1"
-                      step="1"
-                      value={size.quantity}
-                      onChange={(e) =>
-                        handleChangeQuantity({ productId: product.id, quantity: e.target.value, sizeId: size.id })
-                      }
+                    <QuantityInput
+                      onChange={handleChangeQuantity}
+                      sizeQuantity={size.quantity}
+                      productId={product.id}
+                      sizeId={size.id}
                     />
                   </td>
                   <td>{`${CURRENCY_SYMBOL_MAP[size.price.currency]} ${size.price.value}`}</td>

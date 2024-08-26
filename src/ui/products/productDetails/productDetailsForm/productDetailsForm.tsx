@@ -6,7 +6,7 @@ import { Product, ProductSize, CartSizeMap, LocalStorageCart } from '@/lib/defin
 import { useCallback, useMemo, useState } from 'react';
 
 import S from './productDetailsForm.module.scss';
-import { Button, Select } from '@/ui/components';
+import { Button, InputNumber, Select } from '@/ui/components';
 import { adaptCartMapToLocalStorageCart, adaptLocalStorageCartToCartMap, useLocalStorage } from '@/lib/utils';
 
 interface ProductDetailsFormProps {
@@ -42,7 +42,7 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
   const handleClickAddToCart = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { description: _description, price: _price, size: _size, ...restProductFields } = product;
+    const { description: _d, price: _p, size: _s, ...restProductFields } = product;
 
     const localStorageCart = getLS<LocalStorageCart>(LOCAL_STORAGE_KEY.cart);
     const cartMap = adaptLocalStorageCartToCartMap(localStorageCart);
@@ -81,24 +81,12 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
         onSubmit={handleClickAddToCart}
       >
         <div className={S.quantity}>
-          <label htmlFor="quantity">Quantity</label>
-          <input
-            type="number"
-            inputMode="numeric"
-            id="quantity"
+          <InputNumber
+            label="Quantity"
             name="quantity"
-            min="1"
-            step="1"
-            value={userChoice.quantity}
-            onChange={(e) => handleChangeQuantity(e.target.value)}
-          />
-          {/*  TODO: InputNumber re-render label*/}
-          {/* <InputNumber
-            label={'Quantity'}
-            name={'quantity'}
             value={userChoice.quantity}
             onChange={handleChangeQuantity}
-          /> */}
+          />
         </div>
 
         <div className={S.size}>

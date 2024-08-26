@@ -5,7 +5,6 @@ import { ProductCart, ProductSize } from '@/lib/definitions';
 interface RemoveButtonProps {
   sizeId: ProductCart['id'];
   productId: ProductSize['id'];
-  // eslint-disable-next-line no-unused-vars
   onClick: (productId: ProductCart['id'], sizeId: ProductSize['id']) => void;
 }
 function RemoveButton({ onClick, productId, sizeId }: RemoveButtonProps) {

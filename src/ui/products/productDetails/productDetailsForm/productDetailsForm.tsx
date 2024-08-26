@@ -1,13 +1,14 @@
 'use client';
 
 import { CURRENCY_SYMBOL_MAP, LOCAL_STORAGE_KEY } from '@/lib/constants';
-import { Product, ProductSize, CartSizeMap, LocalStorageCart } from '@/lib/definitions';
+import { CartSizeMap, LocalStorageCart, Product, ProductSize } from '@/lib/definitions';
 
 import { useCallback, useMemo, useState } from 'react';
 
-import S from './productDetailsForm.module.scss';
-import { Button, InputNumber, Select } from '@/ui/components';
 import { adaptCartMapToLocalStorageCart, adaptLocalStorageCartToCartMap, useLocalStorage } from '@/lib/utils';
+import { Button, InputNumber, Select } from '@/ui/components';
+import toast from 'react-hot-toast';
+import S from './productDetailsForm.module.scss';
 
 interface ProductDetailsFormProps {
   product: Product;
@@ -62,6 +63,8 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
 
     const updatedLocalStorageCart = adaptCartMapToLocalStorageCart(cartMap);
     setLS(LOCAL_STORAGE_KEY.cart, updatedLocalStorageCart);
+
+    toast.success(`${product.name}, ${selectedSize.name} added to cart!`);
   };
 
   const productPrice = useMemo(() => {

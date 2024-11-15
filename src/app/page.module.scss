@@ -1,4 +1,9 @@
+@import '@/styles/mixin.scss';
+
 .container {
+  @include mainHeight;
+
   display: grid;
-  grid-gap: 24px;
+  gap: 64px;
+  padding: 0 32px;
 }

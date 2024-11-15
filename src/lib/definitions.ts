@@ -8,7 +8,7 @@ export type Product = {
   name: string;
   description: string;
   price: Price;
-  src: string;
+  src: Record<'default' | '600' | '350' | '300', string>;
   size: ProductSize[];
 };
 

@@ -12,7 +12,7 @@ interface ProductDetailsProps {
 }
 export default async function ProductDetails({ productId }: ProductDetailsProps) {
   const products = await fakeFetch<Product[]>(productsMock, { timeOut: 200 });
-  const product = products.find(({ id }) => id === productId);
+  const product = products.find(({ id }) => id === productId) as Product;
 
   if (!product) {
     notFound();
@@ -21,7 +21,7 @@ export default async function ProductDetails({ productId }: ProductDetailsProps)
   return (
     <main className={S.main}>
       <img
-        src={product.src}
+        src={product.src.default}
         alt={product.name}
         className={S.imgContainer}
       />

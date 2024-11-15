@@ -2,8 +2,13 @@
   display: grid;
   grid-auto-flow: column;
   justify-content: space-between;
-  padding: 16px;
+  padding: 32px;
   background-color: rgb(245 245 246);
   position: sticky;
   top: 0;
+  border-radius: 0 0 14px 14px;
+
+  h3 {
+    font-size: 21px;
+  }
 }

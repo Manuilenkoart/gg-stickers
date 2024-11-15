@@ -14,7 +14,7 @@ function ProductName({ productId, productName, productSrc, sizeName }: ProductNa
   return (
     <Link href={ROUTE_PATH.PRODUCTS.DETAILS(productId)}>
       <img
-        src={productSrc}
+        src={productSrc.default}
         alt={productName}
       />
       <p>{`${productName}, ${sizeName}`}</p>

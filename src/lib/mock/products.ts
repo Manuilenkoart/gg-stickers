@@ -29,7 +29,12 @@ export const productsMock: Product[] = [
       value: 1,
     },
     size,
-    src: '/assets/cheers.png',
+    src: {
+      '300': '/assets/cheers/cheers-300.webp',
+      '350': '/assets/cheers/cheers-350.webp',
+      '600': '/assets/cheers/cheers-600.webp',
+      default: '/assets/cheers/cheers-600.webp',
+    },
   },
   {
     description: 'product-description-2',
@@ -40,7 +45,12 @@ export const productsMock: Product[] = [
       value: 1,
     },
     size,
-    src: '/assets/holy.png',
+    src: {
+      '300': '/assets/cheers/cheers-600.webp',
+      '350': '/assets/holy.webp',
+      '600': '/assets/holy.webp',
+      default: '/assets/holy.png',
+    },
   },
   {
     description: 'product-description-3',
@@ -51,7 +61,12 @@ export const productsMock: Product[] = [
       value: 1,
     },
     size,
-    src: '/assets/bbc.png',
+    src: {
+      '300': '/assets/bbc.png',
+      '350': '/assets/bbc.png',
+      '600': '/assets/bbc.png',
+      default: '/assets/bbc.png',
+    },
   },
   {
     description: 'product-description-4',
@@ -62,7 +77,12 @@ export const productsMock: Product[] = [
       value: 1,
     },
     size,
-    src: '/assets/5_floor.png',
+    src: {
+      '300': '/assets/5_floor.png',
+      '350': '/assets/5_floor.png',
+      '600': '/assets/5_floor.png',
+      default: '/assets/5_floor.png',
+    },
   },
   {
     description: 'product-description-5',
@@ -73,7 +93,12 @@ export const productsMock: Product[] = [
       value: 1,
     },
     size,
-    src: '/assets/dev.png',
+    src: {
+      '300': '/assets/dev.png',
+      '350': '/assets/dev.png',
+      '600': '/assets/dev.png',
+      default: '/assets/dev.png',
+    },
   },
   {
     description: 'product-description-7',
@@ -84,7 +109,12 @@ export const productsMock: Product[] = [
       value: 1,
     },
     size,
-    src: '/assets/party.png',
+    src: {
+      '300': '/assets/party.png',
+      '350': '/assets/party.png',
+      '600': '/assets/party.png',
+      default: '/assets/party.png',
+    },
   },
   {
     description: 'product-description-8',
@@ -95,6 +125,11 @@ export const productsMock: Product[] = [
       value: 1,
     },
     size,
-    src: '/assets/poster.png',
+    src: {
+      '300': '/assets/poster.png',
+      '350': '/assets/poster.png',
+      '600': '/assets/poster.png',
+      default: '/assets/poster.png',
+    },
   },
 ];

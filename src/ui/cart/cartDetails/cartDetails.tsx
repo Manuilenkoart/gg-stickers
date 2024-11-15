@@ -1,17 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 'use client';
 
-import { LOCAL_STORAGE_KEY, CURRENCY_SYMBOL_MAP } from '@/lib/constants';
-import { CartMap, ProductCart, ProductSize, CartSizeMap, LocalStorageCart } from '@/lib/definitions';
+import { CURRENCY_SYMBOL_MAP, LOCAL_STORAGE_KEY } from '@/lib/constants';
+import { CartMap, CartSizeMap, LocalStorageCart, ProductCart, ProductSize } from '@/lib/definitions';
 import ROUTE_PATH from '@/lib/ROUTE_PATH';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 
-import S from './cartDetails.module.scss';
-import RemoveButton from './removeButton';
 import { adaptCartMapToLocalStorageCart, adaptLocalStorageCartToCartMap, useLocalStorage } from '@/lib/utils';
 import { Button } from '@/ui/components';
+import S from './cartDetails.module.scss';
+import ProductName from './productName';
+import QuantityInput from './quantityInput';
+import RemoveButton from './removeButton';
 
 function CartDetails() {
   const { getLS, setLS } = useLocalStorage();
@@ -27,30 +29,32 @@ function CartDetails() {
     setLS(LOCAL_STORAGE_KEY.cart, localStorageCart);
   }, [cartMap, setLS]);
 
-  const handleRemoveProductClick = (productId: ProductCart['id'], sizeId: ProductSize['id']) => {
-    setCartMap((prev) => {
-      const prevCartMap = new Map(prev);
+  const handleRemoveProductClick = useCallback(
+    (productId: ProductCart['id'], sizeId: ProductSize['id']) =>
+      setCartMap((prev) => {
+        const prevCartMap = new Map(prev);
 
-      const product = prevCartMap.get(productId);
-      if (!product) return prevCartMap;
+        const product = prevCartMap.get(productId);
+        if (!product) return prevCartMap;
 
-      const productSize = product.sizes.get(sizeId);
-      if (!productSize) return prevCartMap;
+        const productSize = product.sizes.get(sizeId);
+        if (!productSize) return prevCartMap;
 
-      const prevSizeMap = new Map(product.sizes);
+        const prevSizeMap = new Map(product.sizes);
 
-      prevSizeMap.delete(sizeId);
+        prevSizeMap.delete(sizeId);
 
-      if (prevSizeMap.size > 0) {
-        const productUpdated = { ...product, sizes: prevSizeMap };
-        prevCartMap.set(productId, productUpdated);
-      } else {
-        prevCartMap.delete(productId);
-      }
+        if (prevSizeMap.size > 0) {
+          const productUpdated = { ...product, sizes: prevSizeMap };
+          prevCartMap.set(productId, productUpdated);
+        } else {
+          prevCartMap.delete(productId);
+        }
 
-      return prevCartMap;
-    });
-  };
+        return prevCartMap;
+      }),
+    [],
+  );
 
   const cartPriceTotal = [...cartMap.values()].reduce(
     (productAcc, product) =>
@@ -59,40 +63,35 @@ function CartDetails() {
     0,
   );
 
-  const handleChangeQuantity = ({
-    productId,
-    quantity,
-    sizeId,
-  }: {
-    quantity: string;
-    productId: ProductCart['id'];
-    sizeId: ProductSize['id'];
-  }) => {
-    setCartMap((prev) => {
-      const prevCartMap = new Map(prev);
+  const handleChangeQuantity = useCallback(
+    ({ productId, quantity, sizeId }: { quantity: string; productId: ProductCart['id']; sizeId: ProductSize['id'] }) =>
+      setCartMap((prev) => {
+        const prevCartMap = new Map(prev);
 
-      const productInCart = prevCartMap.get(productId);
-      if (!productInCart) return prevCartMap;
+        const productInCart = prevCartMap.get(productId);
+        if (!productInCart) return prevCartMap;
 
-      const cartSizeMap: CartSizeMap = new Map(productInCart.sizes);
-      const productSizeInCart = cartSizeMap.get(sizeId);
-      if (!productSizeInCart) return prevCartMap;
+        const cartSizeMap: CartSizeMap = new Map(productInCart.sizes);
+        const productSizeInCart = cartSizeMap.get(sizeId);
+        if (!productSizeInCart) return prevCartMap;
 
-      const minCartProductQuantity = 1;
-      const updatedQuantity = quantity.trim() ? Math.floor(Number(quantity)) : minCartProductQuantity;
+        const minCartProductQuantity = 1;
+        const updatedQuantity = quantity.trim() ? Math.floor(Number(quantity)) : minCartProductQuantity;
 
-      cartSizeMap.set(sizeId, {
-        ...productSizeInCart,
-        quantity: updatedQuantity,
-      });
+        cartSizeMap.set(sizeId, {
+          ...productSizeInCart,
+          quantity: updatedQuantity,
+        });
 
-      prevCartMap.set(productId, { ...productInCart, sizes: cartSizeMap });
+        prevCartMap.set(productId, { ...productInCart, sizes: cartSizeMap });
 
-      return prevCartMap;
-    });
-  };
+        return prevCartMap;
+      }),
+    [],
+  );
+
   return (
-    <main className={S.section}>
+    <section className={S.section}>
       {cartMap.size ? (
         <table>
           <caption>
@@ -110,33 +109,30 @@ function CartDetails() {
           <tbody>
             {[...cartMap.values()].map((product) =>
               [...product.sizes.values()].map((size) => (
-                <tr key={`${product.id}-${size.id}`}>
+                <tr key={product.id + size.id}>
                   <th>
-                    <Link href={ROUTE_PATH.PRODUCTS.DETAILS(product.id)}>
-                      <img
-                        src={product.src}
-                        alt={product.name}
-                      />
-                      <p>{`${product.name}, ${size.name}`}</p>
-                    </Link>
+                    <ProductName
+                      productId={product.id}
+                      productName={product.name}
+                      productSrc={product.src}
+                      sizeName={size.name}
+                    />
                   </th>
                   <td>
-                    <input
-                      type="number"
-                      inputMode="numeric"
-                      id="quantity"
-                      name="quantity"
-                      min="1"
-                      step="1"
-                      value={size.quantity}
-                      onChange={(e) =>
-                        handleChangeQuantity({ productId: product.id, quantity: e.target.value, sizeId: size.id })
-                      }
+                    <QuantityInput
+                      onChange={handleChangeQuantity}
+                      sizeQuantity={size.quantity}
+                      productId={product.id}
+                      sizeId={size.id}
                     />
                   </td>
                   <td>{`${CURRENCY_SYMBOL_MAP[size.price.currency]} ${size.price.value}`}</td>
                   <td>
-                    <RemoveButton onClick={() => handleRemoveProductClick(product.id, size.id)} />
+                    <RemoveButton
+                      productId={product.id}
+                      sizeId={size.id}
+                      onClick={handleRemoveProductClick}
+                    />
                   </td>
                 </tr>
               )),
@@ -162,7 +158,7 @@ function CartDetails() {
           </Link>
         </>
       )}
-    </main>
+    </section>
   );
 }
-export default CartDetails;
+export default memo(CartDetails);

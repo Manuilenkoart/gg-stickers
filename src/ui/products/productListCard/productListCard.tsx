@@ -5,6 +5,7 @@ import ROUTE_PATH from '@/lib/ROUTE_PATH';
 import Link from 'next/link';
 
 import S from './productListCard.module.scss';
+import ProductListCardPicture from './productListCardPicture';
 
 interface ProductListCardProps {
   product: Product;
@@ -16,7 +17,7 @@ export default function ProductListCard({ product: { description, id, name, pric
       href={ROUTE_PATH.PRODUCTS.DETAILS(id)}
       className={S.container}
     >
-      <img
+      <ProductListCardPicture
         src={src}
         alt={name}
       />

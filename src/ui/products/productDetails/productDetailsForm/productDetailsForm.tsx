@@ -1,13 +1,14 @@
 'use client';
 
-import { LOCAL_STORAGE_KEY } from '@/lib/constants';
-import { Product, ProductSize, CartSizeMap, LocalStorageCart } from '@/lib/definitions';
+import { CURRENCY_SYMBOL_MAP, LOCAL_STORAGE_KEY } from '@/lib/constants';
+import { CartSizeMap, LocalStorageCart, Product, ProductSize } from '@/lib/definitions';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
-import S from './productDetailsForm.module.scss';
-import { Button, Select } from '@/ui/components';
 import { adaptCartMapToLocalStorageCart, adaptLocalStorageCartToCartMap, useLocalStorage } from '@/lib/utils';
+import { Button, InputNumber, Select } from '@/ui/components';
+import toast from 'react-hot-toast';
+import S from './productDetailsForm.module.scss';
 
 interface ProductDetailsFormProps {
   product: Product;
@@ -23,28 +24,26 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
   });
 
   const sizeOptions = useMemo(() => product.size.map(({ id, name }) => ({ label: name, value: id })), [product.size]);
+  const selectedSize = useMemo(
+    () => product.size.find(({ id }) => id === userChoice.sizeId),
+    [product.size, userChoice.sizeId],
+  ) as ProductSize;
 
-  const handleChangeQuantity = (quantity: string) => {
+  const handleChangeQuantity = useCallback((quantity: string) => {
     setUserChoice((prev) => ({
       ...prev,
       quantity: quantity.trim() ? Math.floor(Number(quantity)) : 0,
     }));
-  };
+  }, []);
 
-  const handleChangeSize = (sizeId: ProductSize['id']) => {
+  const handleChangeSize = useCallback((sizeId: ProductSize['id']) => {
     setUserChoice((prev) => ({ ...prev, sizeId }));
-  };
+  }, []);
 
   const handleClickAddToCart = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { description: _description, price: _price, size: _size, ...restProductFields } = product;
-
-    const selectedSize = product.size.find(({ id }) => id === userChoice.sizeId);
-    if (!selectedSize) {
-      console.error('The selected size was not found');
-      return;
-    }
+    const { description: _d, price: _p, size: _s, ...restProductFields } = product;
 
     const localStorageCart = getLS<LocalStorageCart>(LOCAL_STORAGE_KEY.cart);
     const cartMap = adaptLocalStorageCartToCartMap(localStorageCart);
@@ -64,40 +63,49 @@ export default function ProductDetailsForm({ product }: ProductDetailsFormProps)
 
     const updatedLocalStorageCart = adaptCartMapToLocalStorageCart(cartMap);
     setLS(LOCAL_STORAGE_KEY.cart, updatedLocalStorageCart);
+
+    toast.success(`${product.name}, ${selectedSize.name} added to cart!`);
   };
 
+  const productPrice = useMemo(() => {
+    const {
+      price: { currency, value },
+    } = selectedSize;
+
+    return `${CURRENCY_SYMBOL_MAP[currency]} ${value}`;
+  }, [selectedSize]);
+
   return (
-    <form
-      className={S.container}
-      onSubmit={handleClickAddToCart}
-    >
-      <div className={S.quantity}>
-        <label htmlFor="quantity">Quantity</label>
-        <input
-          type="number"
-          inputMode="numeric"
-          id="quantity"
-          name="quantity"
-          min="1"
-          step="1"
-          value={userChoice.quantity}
-          onChange={(e) => handleChangeQuantity(e.target.value)}
-        />
-      </div>
+    <>
+      <div>{productPrice}</div>
 
-      <div className={S.size}>
-        <Select
-          name="sizeId"
-          label="Size"
-          defaultValue={userChoice.sizeId}
-          options={sizeOptions}
-          onChange={handleChangeSize}
-        />
-      </div>
+      <form
+        className={S.container}
+        onSubmit={handleClickAddToCart}
+      >
+        <div className={S.quantity}>
+          <InputNumber
+            label="Quantity"
+            name="quantity"
+            value={userChoice.quantity}
+            onChange={handleChangeQuantity}
+          />
+        </div>
 
-      <div>
-        <Button type="submit">Add to cart</Button>
-      </div>
-    </form>
+        <div className={S.size}>
+          <Select
+            name="sizeId"
+            label="Size"
+            defaultValue={userChoice.sizeId}
+            options={sizeOptions}
+            onChange={handleChangeSize}
+          />
+        </div>
+
+        <div>
+          <Button type="submit">Add to cart</Button>
+        </div>
+      </form>
+    </>
   );
 }
